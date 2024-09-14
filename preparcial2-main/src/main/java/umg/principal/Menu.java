@@ -21,8 +21,6 @@ public class Menu extends JFrame {
     }
 
     public Menu() {
-
-
         cmd_ejer1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -32,34 +30,34 @@ public class Menu extends JFrame {
             }
         });
 
-
         cmd_ejer2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ejer_2 abrir2 = new Ejer_2();
-                abrir2.setVisible(true);
-                dispose();
+                System.out.println("Botón Ejercicio 2 presionado"); // Depuración
+                try {
+                    Ejer_2 abrir2 = new Ejer_2();
+                    abrir2.setVisible(true);
+                    dispose();
+                } catch (Exception ex) {
+                    ex.printStackTrace(); // Muestra cualquier error que ocurra
+                }
             }
         });
-
 
         cmd_ejer3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Ejer_3 abrir3 = new Ejer_3();
-                abrir3.setVisible(true); // Abre el formulario 3
-                dispose(); // Cierra la ventana actual (MENUPRINCIPAL)
+                abrir3.setVisible(true);
+                dispose();
             }
         });
-
 
         cmd_salir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Cierra el programa
+                System.exit(0);
             }
         });
     }
 }
-
-

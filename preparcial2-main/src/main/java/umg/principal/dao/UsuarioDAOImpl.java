@@ -1,5 +1,4 @@
 package umg.principal.dao;
-
 import umg.principal.conexion.DateBaseConnection;
 import umg.principal.model.Usuario;
 
@@ -15,6 +14,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
         try (Connection conn = DateBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, usuario.getCarne());
             stmt.setString(2, usuario.getNombre());
             stmt.setString(3, usuario.getCorreo());
@@ -22,8 +22,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setLong(5, usuario.getTelegramid());
             stmt.setString(6, usuario.getActivo());
             stmt.executeUpdate();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error al insertar usuario: " + e.getMessage());
         }
     }
 
@@ -34,21 +35,23 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
         try (Connection conn = DateBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                usuario = new Usuario();
-                usuario.setIdusuario(rs.getInt("idusuario"));
-                usuario.setCarne(rs.getString("carne"));
-                usuario.setNombre(rs.getString("nombre"));
-                usuario.setCorreo(rs.getString("correo"));
-                usuario.setSeccion(rs.getString("seccion"));
-                usuario.setTelegramid(rs.getLong("telegramid"));
-                usuario.setActivo(rs.getString("activo"));
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    usuario = new Usuario();
+                    usuario.setIdusuario(rs.getInt("idusuario"));
+                    usuario.setCarne(rs.getString("carne"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setCorreo(rs.getString("correo"));
+                    usuario.setSeccion(rs.getString("seccion"));
+                    usuario.setTelegramid(rs.getLong("telegramid"));
+                    usuario.setActivo(rs.getString("activo"));
+                }
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error al obtener usuario por ID: " + e.getMessage());
         }
 
         return usuario;
@@ -74,8 +77,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setActivo(rs.getString("activo"));
                 listaUsuarios.add(usuario);
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error al obtener todos los usuarios: " + e.getMessage());
         }
 
         return listaUsuarios;
@@ -87,6 +91,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
         try (Connection conn = DateBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, usuario.getCarne());
             stmt.setString(2, usuario.getNombre());
             stmt.setString(3, usuario.getCorreo());
@@ -95,8 +100,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setString(6, usuario.getActivo());
             stmt.setInt(7, usuario.getIdusuario());
             stmt.executeUpdate();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error al actualizar usuario: " + e.getMessage());
         }
     }
 
@@ -106,10 +112,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
         try (Connection conn = DateBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, id);
             stmt.executeUpdate();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error al eliminar usuario: " + e.getMessage());
         }
     }
 }
